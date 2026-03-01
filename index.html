@@ -6,172 +6,70 @@
     <title>Gabin Search</title>
     <link href="https://fonts.googleapis.com/css?family=Product+Sans" rel="stylesheet">
     <style>
-        :root {
-            --google-blue: #4285f4;
-            --google-red: #ea4335;
-            --google-yellow: #fbbc05;
-            --google-green: #34a853;
-            --border-color: #ebebeb;
-        }
-
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
+        body {
             font-family: 'Product Sans', Arial, sans-serif;
-        }
-
-        /* --- Tampilan 1: HOME --- */
-        #home-page {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
-            transition: all 0.3s ease;
+            margin: 0;
+            background-color: #FFFFFF;
+            color: #333333;
         }
-
-        .logo-big {
-            font-size: 6rem;
+        .gabin-logo {
+            font-size: 5rem;
             font-weight: bold;
             margin-bottom: 30px;
-            letter-spacing: -3px;
+            letter-spacing: -2px;
         }
-
-        .search-box-home {
-            width: 90%;
-            max-width: 584px;
-        }
-
-        /* --- Tampilan 2: SEARCH RESULTS (Hidden by default) --- */
-        #search-results-page {
-            display: none;
-        }
-
-        header {
-            position: fixed;
-            top: 0;
+        /* Memberikan warna berbeda pada tiap huruf Gabin layaknya mesin pencari populer */
+        .gabin-logo span:nth-child(1) { color: #4285f4; } /* G */
+        .gabin-logo span:nth-child(2) { color: #ea4335; } /* a */
+        .gabin-logo span:nth-child(3) { color: #fbbc05; } /* b */
+        .gabin-logo span:nth-child(4) { color: #4285f4; } /* i */
+        .gabin-logo span:nth-child(5) { color: #34a853; } /* n */
+        
+        .search-container {
             width: 100%;
-            background: #fff;
-            border-bottom: 1px solid var(--border-color);
-            padding: 15px 20px;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-        }
-
-        .logo-small {
-            font-size: 24px;
-            font-weight: bold;
-            text-decoration: none;
-            margin-right: 30px;
-            display: flex;
-        }
-
-        .results-container {
-            margin-top: 90px;
-            padding-left: 180px; /* Memberikan ruang di sisi kiri agar mirip Google Desktop */
-            max-width: 700px; /* Membatasi lebar hasil pencarian di sisi kiri */
-        }
-
-        /* Logo Coloring */
-        .g { color: var(--google-blue); }
-        .a { color: var(--google-red); }
-        .b { color: var(--google-yellow); }
-        .i { color: var(--google-blue); }
-        .n { color: var(--google-green); }
-
-        /* Customizing CSE Appearance */
-        .gsc-control-cse {
-            padding: 0 !important;
-            border: none !important;
-            background: transparent !important;
+            max-width: 700px;
+            padding: 0 20px;
+            box-sizing: border-box;
         }
         
+        /* Modifikasi tampilan bawaan Google CSE agar menyatu dengan tema Gabin */
+        .gsc-control-cse {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+        }
         .gsc-search-button-v2 {
-            background-color: var(--google-blue) !important;
-            border-radius: 4px !important;
+            border-radius: 4px;
         }
-
-        footer {
-            margin-top: 50px;
-            padding: 20px;
-            font-size: 13px;
+        
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.85rem;
             color: #70757a;
-            background: #f2f2f2;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .results-container {
-                padding-left: 20px;
-                max-width: 100%;
-            }
-            .logo-small { margin-right: 10px; }
         }
     </style>
+    
+    <script async src="https://cse.google.com/cse.js?cx=b402d636637744206"></script>
 </head>
 <body>
 
-    <div id="home-page">
-        <div class="logo-big">
-            <span class="g">G</span><span class="a">a</span><span class="b">b</span><span class="i">i</span><span class="n">n</span>
-        </div>
-        <div class="search-box-home">
-            <div class="gcse-search"></div>
-        </div>
+    <div class="gabin-logo">
+        <span>G</span><span>a</span><span>b</span><span>i</span><span>n</span>
     </div>
 
-    <div id="search-results-page">
-        <header>
-            <a href="/" class="logo-small">
-                <span class="g">G</span><span class="a">a</span><span class="b">b</span><span class="i">i</span><span class="n">n</span>
-            </a>
-            <div style="flex-grow: 1; max-width: 600px;">
-                <div id="header-search-target"></div>
-            </div>
-        </header>
-
-        <div class="results-container">
-            </div>
+    <div class="search-container">
+        <div class="gcse-search"></div>
     </div>
 
-    <script async src="https://cse.google.com/cse.js?cx=b402d636637744206"></script>
-
-    <script>
-        // Logika untuk mendeteksi pencarian dan mengubah UI
-        function checkSearch() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const query = urlParams.get('q');
-            
-            const home = document.getElementById('home-page');
-            const results = document.getElementById('search-results-page');
-
-            if (query) {
-                // Jika ada pencarian, sembunyikan home, tampilkan hasil
-                home.style.display = 'none';
-                results.style.display = 'block';
-                document.body.style.overflow = 'auto';
-            } else {
-                // Jika tidak ada pencarian, tampilkan home
-                home.style.display = 'flex';
-                results.style.display = 'none';
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        // Jalankan saat load dan saat URL berubah (back/forward)
-        window.addEventListener('load', checkSearch);
-        window.addEventListener('popstate', checkSearch);
-        
-        // Interval kecil untuk memastikan jika user menekan enter di search box
-        setInterval(() => {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.get('q') && document.getElementById('home-page').style.display !== 'none') {
-                checkSearch();
-            }
-        }, 500);
-    </script>
+    <div class="footer">
+        &copy; 2026 Gabin Search Engine
+    </div>
 
 </body>
 </html>
