@@ -1,70 +1,168 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gabin Search</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabin Search</title>
 
-<link href="https://fonts.googleapis.com/css?family=Product+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Product+Sans:400,700" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --text-color: #202124;
+            --shadow: 0 1px 6px rgba(32,33,36,0.28);
+        }
 
-<style>
-body{
-    font-family:'Product Sans', Arial, sans-serif;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    height:100vh;
-    margin:0;
-    background:#fff;
-    color:#333;
-}
+        body {
+            font-family: 'Product Sans', Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: var(--primary-bg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background 0.3s ease;
+        }
 
-.gabin-logo{
-    font-size:5rem;
-    font-weight:bold;
-    margin-bottom:30px;
-    letter-spacing:-2px;
-}
+        /* Overlay gelap tipis jika ada background agar teks tetap terbaca */
+        body.has-bg::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.2);
+            z-index: -1;
+        }
 
-.gabin-logo span:nth-child(1){color:#4285f4;}
-.gabin-logo span:nth-child(2){color:#ea4335;}
-.gabin-logo span:nth-child(3){color:#fbbc05;}
-.gabin-logo span:nth-child(4){color:#4285f4;}
-.gabin-logo span:nth-child(5){color:#34a853;}
+        .gabin-logo {
+            font-size: 5.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            letter-spacing: -2.5px;
+            user-select: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
 
-.search-container{
-    width:100%;
-    max-width:700px;
-    padding:0 20px;
-}
+        /* Warna Logo Google Style */
+        .gabin-logo span:nth-child(1) { color: #4285f4; }
+        .gabin-logo span:nth-child(2) { color: #ea4335; }
+        .gabin-logo span:nth-child(3) { color: #fbbc05; }
+        .gabin-logo span:nth-child(4) { color: #4285f4; }
+        .gabin-logo span:nth-child(5) { color: #34a853; }
 
-.footer{
-    position:absolute;
-    bottom:20px;
-    font-size:0.85rem;
-    color:#70757a;
-}
-</style>
+        /* Menyesuaikan logo jika background gelap */
+        body.has-bg .gabin-logo span { color: #fff !important; }
 
-<!-- IMPORTANT -->
-<script async src="https://cse.google.com/cse.js?cx=b402d636637744206"></script>
+        .search-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 0 20px;
+            z-index: 10;
+        }
 
+        /* Tombol Pensil Custom Background */
+        .custom-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            border: 1px solid #dfe1e5;
+        }
+
+        .custom-btn:hover {
+            transform: scale(1.1);
+            background: #f8f9fa;
+        }
+
+        .custom-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: #5f6368;
+        }
+
+        #bg-input {
+            display: none;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            font-size: 0.85rem;
+            color: #70757a;
+        }
+
+        body.has-bg .footer {
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        /* Mempercantik kotak pencarian Google */
+        .gsc-control-cse {
+            background-color: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+        }
+    </style>
+
+    <script async src="https://cse.google.com/cse.js?cx=b402d636637744206"></script>
 </head>
 <body>
 
-<div class="gabin-logo">
-<span>G</span><span>a</span><span>b</span><span>i</span><span>n</span>
-</div>
+    <div class="gabin-logo">
+        <span>G</span><span>a</span><span>b</span><span>i</span><span>n</span>
+    </div>
 
-<div class="search-container">
-    <!-- Ini yang bikin tampilan normal + tab otomatis -->
-    <div class="gcse-search"></div>
-</div>
+    <div class="search-container">
+        <div class="gcse-search"></div>
+    </div>
 
-<div class="footer">
-&copy; 2026 Gabin Search Engine
-</div>
+    <label for="bg-input" class="custom-btn" title="Ganti Background">
+        <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+    </label>
+    <input type="file" id="bg-input" accept="image/*">
+
+    <div class="footer">
+        &copy; 2026 Gabin Search Engine
+    </div>
+
+    <script>
+        const bgInput = document.getElementById('bg-input');
+        
+        // Cek jika user sudah pernah upload gambar sebelumnya (Local Storage)
+        const savedBg = localStorage.getItem('gabin-bg');
+        if (savedBg) {
+            document.body.style.backgroundImage = `url(${savedBg})`;
+            document.body.classList.add('has-bg');
+        }
+
+        bgInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const result = event.target.result;
+                    document.body.style.backgroundImage = `url(${result})`;
+                    document.body.classList.add('has-bg');
+                    // Simpan ke local storage agar tidak hilang saat refresh
+                    localStorage.setItem('gabin-bg', result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 
 </body>
 </html>
